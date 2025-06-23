@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Categoria {
+  CategoriaID Int      @id @default(autoincrement())
+  Nombre      String  @db.VarChar(50)
+  Juego       Juego[]
+}
+
+model Usuario {
+  UsuarioID Int      @id @default(autoincrement()) 
+  Correo     String @db.VarChar(100)
+  Password   String @db.VarChar(100)
+  Nombre     String @db.VarChar(50)
+  Token      String @db.VarChar(50)
+  Estado     Int
+  Calificaciones Calificacion[]
+  Ventas        Venta[]
+}
+
+
+model Juego {
+  JuegoID               Int     @id @default(autoincrement())
+  Nombre                String  @db.VarChar(100)
+  Precio                String  @db.VarChar(100)
+  Oferta                Int
+  Estado                Int //no se pq ta como int en lo q me mandaste, q otros estados puede aer? si hay solo 2 usemosbool
+  Categoria_CategoriaID Int
+  Categoria             Categoria @relation(fields: [Categoria_CategoriaID], references: [CategoriaID])
+  Calificaciones        Calificacion[]
+  Ventas                Venta[]
+  Plataformas           Juego_Plataforma[]
+}
+
+model Plataforma {
+  PlataformaID Int      @id @default(autoincrement())
+  Nombre        String @db.VarChar(100)
+  Juegos        Juego_Plataforma[]
+}
+
+model Calificacion {
+  CalificacionID     Int  
+  Usuario_UsuarioID  Int 
+  Juego_JuegoID      Int
+  Juego_CategoriaID  Int
+  Valoracion         String @db.VarChar(100)
+  Comentario         String @db.VarChar(1000)
+  Usuario            Usuario @relation(fields: [Usuario_UsuarioID], references: [UsuarioID])
+  Juego              Juego   @relation(fields: [Juego_JuegoID], references: [JuegoID])
+  @@id([CalificacionID, Usuario_UsuarioID, Juego_JuegoID, Juego_CategoriaID])
+}
+
+model Venta {
+  VentaID           Int  
+  Usuario_UsuarioID Int
+  Juego_JuegoID     Int
+  Juego_CategoriaID Int
+  Fecha             DateTime
+  Codigo            String @db.VarChar(30)
+  MontoPagado       String @db.VarChar(100)
+  Usuario           Usuario @relation(fields: [Usuario_UsuarioID], references: [UsuarioID])
+  Juego             Juego   @relation(fields: [Juego_JuegoID], references: [JuegoID])
+  @@id([VentaID, Usuario_UsuarioID, Juego_JuegoID, Juego_CategoriaID])
+}
+
+model Noticia {
+  NoticiaID Int     @id @default(autoincrement())
+  Titulo    String  @db.VarChar(100)
+  Texto     String  @db.VarChar(1000)
+  Activo    Int
+}
+
+model Juego_Plataforma {
+  PlataformaID Int
+  JuegoID      Int
+  Plataforma   Plataforma @relation(fields: [PlataformaID], references: [PlataformaID])
+  Juego        Juego      @relation(fields: [JuegoID], references: [JuegoID])
+  @@id([PlataformaID, JuegoID])
+}
+
+
