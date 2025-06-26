@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id          Int     @id @default(autoincrement())
+  nickname    String  @unique
+  correo      String  @unique
+  contrasena  String
+  pais        String?
+  imagen      String?
+  tipo        String  @default("user")
+  verificado  Boolean @default(false)
+  token       String?
+}
+
+model Juego {
+  id               Int           @id @default(autoincrement())
+  nombre           String
+  precio           Float
+  plataformas      String[]
+  categoria        String
+  stock            Int
+  rating           Float
+  imagen           String
+  descripcion      String
+  descripcionLarga String
+  trailerURL       String
+  galeria          String[]
+  caracteristicas  String[]
+  lanzamiento      DateTime
+  descuento         Int      @default(0)
+  comentarios      Comentario[]
+}
+
+model Comentario {
+  id       Int      @id @default(autoincrement())
+  user     String
+  rating   Int
+  text     String
+  date     DateTime
+  juego    Juego    @relation(fields: [juegoId], references: [id])
+  juegoId  Int
+}
