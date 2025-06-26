@@ -1,5 +1,5 @@
 // src/controllers/InicioSesionController.ts
-import { PrismaClient } from '../generated/prisma';
+import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 
@@ -14,6 +14,9 @@ export const registrarUsuario = async (req: Request, res: Response) => {
         }
 
         // CORRECCIÓN AQUÍ: Cambia findUnique a findFirst
+        //pq lo cambiamos?
+        // findUnique se usa para buscar un registro por una clave única,
+        // mientras que findFirst se usa para buscar el primer registro que coincida con las condiciones
         const usuarioExistente = await prisma.usuario.findFirst({
             where: { Correo: correo },
         });

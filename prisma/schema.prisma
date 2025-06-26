@@ -15,80 +15,78 @@ datasource db {
 }
 
 model Categoria {
-  CategoriaID Int      @id @default(autoincrement())
-  Nombre      String  @db.VarChar(50)
-  Juego       Juego[]
+  id        Int     @id @default(autoincrement())
+  nombre    String  @db.VarChar(50)
+  juegos    Juego[]
 }
 
 model Usuario {
-  UsuarioID Int      @id @default(autoincrement()) 
-  Correo     String @db.VarChar(100)
-  Password   String @db.VarChar(100)
-  Nombre     String @db.VarChar(50)
-  Token      String @db.VarChar(50)
-  Estado     Int
-  Calificaciones Calificacion[]
-  Ventas        Venta[]
+  id        Int      @id @default(autoincrement()) 
+  correo    String   @db.VarChar(100)
+  password  String   @db.VarChar(100) // Store the hashed password here
+  nombre    String   @db.VarChar(50)
+  token     String   @db.VarChar(50)
+  estado    Int
+  admin     Boolean
+  fechaCreacion DateTime @default(now())
+  calificaciones Calificacion[]
+  ventas    Venta[]
 }
 
-
 model Juego {
-  JuegoID               Int     @id @default(autoincrement())
-  Nombre                String  @db.VarChar(100)
-  Precio                String  @db.VarChar(100)
-  Oferta                Int
-  Estado                Int //no se pq ta como int en lo q me mandaste, q otros estados puede aer? si hay solo 2 usemosbool
-  Categoria_CategoriaID Int
-  Categoria             Categoria @relation(fields: [Categoria_CategoriaID], references: [CategoriaID])
-  Calificaciones        Calificacion[]
-  Ventas                Venta[]
-  Plataformas           Juego_Plataforma[]
+  id        Int      @id @default(autoincrement())
+  nombre    String   @db.VarChar(100)
+  precio    String   @db.VarChar(100)
+  oferta    Int
+  estado    Int
+  categoriaId Int
+  categoria Categoria @relation(fields: [categoriaId], references: [id])
+  calificaciones Calificacion[]
+  ventas    Venta[]
+  plataformas JuegoxPlataforma[]
 }
 
 model Plataforma {
-  PlataformaID Int      @id @default(autoincrement())
-  Nombre        String @db.VarChar(100)
-  Juegos        Juego_Plataforma[]
+  id        Int      @id @default(autoincrement())
+  nombre    String   @db.VarChar(100)
+  juegos    JuegoxPlataforma[]
 }
 
 model Calificacion {
-  CalificacionID     Int  
-  Usuario_UsuarioID  Int 
-  Juego_JuegoID      Int
-  Juego_CategoriaID  Int
-  Valoracion         String @db.VarChar(100)
-  Comentario         String @db.VarChar(1000)
-  Usuario            Usuario @relation(fields: [Usuario_UsuarioID], references: [UsuarioID])
-  Juego              Juego   @relation(fields: [Juego_JuegoID], references: [JuegoID])
-  @@id([CalificacionID, Usuario_UsuarioID, Juego_JuegoID, Juego_CategoriaID])
+  id              Int  
+  usuarioId       Int 
+  juegoId         Int
+  categoriaId     Int
+  valoracion      String @db.VarChar(100)
+  comentario      String @db.VarChar(1000)
+  usuario         Usuario @relation(fields: [usuarioId], references: [id])
+  juego           Juego   @relation(fields: [juegoId], references: [id])
+  @@id([id, usuarioId, juegoId, categoriaId])
 }
 
 model Venta {
-  VentaID           Int  
-  Usuario_UsuarioID Int
-  Juego_JuegoID     Int
-  Juego_CategoriaID Int
-  Fecha             DateTime
-  Codigo            String @db.VarChar(30)
-  MontoPagado       String @db.VarChar(100)
-  Usuario           Usuario @relation(fields: [Usuario_UsuarioID], references: [UsuarioID])
-  Juego             Juego   @relation(fields: [Juego_JuegoID], references: [JuegoID])
-  @@id([VentaID, Usuario_UsuarioID, Juego_JuegoID, Juego_CategoriaID])
+  id              Int  
+  usuarioId       Int
+  juegoId         Int
+  fecha           DateTime
+  codigo          String @db.VarChar(30)
+  montoPagado     String @db.VarChar(100)
+  usuario         Usuario @relation(fields: [usuarioId], references: [id])
+  juego           Juego   @relation(fields: [juegoId], references: [id])
+  @@id([id, usuarioId, juegoId])
 }
 
 model Noticia {
-  NoticiaID Int     @id @default(autoincrement())
-  Titulo    String  @db.VarChar(100)
-  Texto     String  @db.VarChar(1000)
-  Activo    Int
+  id        Int     @id @default(autoincrement())
+  titulo    String  @db.VarChar(100)
+  texto     String  @db.VarChar(1000)
+  activo    Int
 }
 
-model Juego_Plataforma {
-  PlataformaID Int
-  JuegoID      Int
-  Plataforma   Plataforma @relation(fields: [PlataformaID], references: [PlataformaID])
-  Juego        Juego      @relation(fields: [JuegoID], references: [JuegoID])
-  @@id([PlataformaID, JuegoID])
+model JuegoxPlataforma {
+  plataformaId Int
+  juegoId      Int
+  plataforma   Plataforma @relation(fields: [plataformaId], references: [id])
+  juego        Juego      @relation(fields: [juegoId], references: [id])
+  @@id([plataformaId, juegoId])
 }
-
-
