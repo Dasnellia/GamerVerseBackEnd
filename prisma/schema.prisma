@@ -17,32 +17,43 @@ datasource db {
 model Categoria {
   CategoriaID Int      @id @default(autoincrement())
   Nombre      String  @db.VarChar(50)
-  Juego       Juego[]
+  Juegos       Juego[]
 }
 
 model Usuario {
-  UsuarioID Int      @id @default(autoincrement()) 
-  Correo     String @db.VarChar(100)
-  Password   String @db.VarChar(100)
-  Nombre     String @db.VarChar(50)
-  Token      String @db.VarChar(50)
-  Estado     Int
+  UsuarioID   Int       @id @default(autoincrement())
+  Correo      String    @unique @db.VarChar(100)
+  Password    String    @db.VarChar(100)
+  Nombre      String    @db.VarChar(50)
+  Pais        String?   @db.VarChar(50)
+  Token       String?   @db.VarChar(50)
+  Admin       Boolean   @default(false)
+  Verificado  Boolean   @default(false)
   Calificaciones Calificacion[]
   Ventas        Venta[]
 }
 
-
 model Juego {
-  JuegoID               Int     @id @default(autoincrement())
-  Nombre                String  @db.VarChar(100)
-  Precio                String  @db.VarChar(100)
-  Oferta                Int
-  Estado                Int //no se pq ta como int en lo q me mandaste, q otros estados puede aer? si hay solo 2 usemosbool
+  JuegoID           Int        @id @default(autoincrement())
+  Nombre            String     @db.VarChar(100)
+  Precio            Float
+  Oferta            Int        @default(0)
+  Estado            Boolean
   Categoria_CategoriaID Int
-  Categoria             Categoria @relation(fields: [Categoria_CategoriaID], references: [CategoriaID])
-  Calificaciones        Calificacion[]
-  Ventas                Venta[]
-  Plataformas           Juego_Plataforma[]
+  Categoria         Categoria @relation(fields: [Categoria_CategoriaID], references: [CategoriaID])
+  Calificaciones    Calificacion[]
+  Ventas            Venta[]
+  Plataformas       Juego_Plataforma[]
+  Stock             Int
+  Rating            Float
+  Imagen            String
+  Descripcion       String
+  DescripcionLarga  String
+  TrailerURL        String
+  Galeria           String[]
+  Caracteristicas   String[]
+  Lanzamiento       DateTime
+  Descuento         Int        @default(0)
 }
 
 model Plataforma {
@@ -52,28 +63,25 @@ model Plataforma {
 }
 
 model Calificacion {
-  CalificacionID     Int  
+  CalificacionID     Int   @id @default(autoincrement())
   Usuario_UsuarioID  Int 
   Juego_JuegoID      Int
-  Juego_CategoriaID  Int
   Valoracion         String @db.VarChar(100)
   Comentario         String @db.VarChar(1000)
   Usuario            Usuario @relation(fields: [Usuario_UsuarioID], references: [UsuarioID])
   Juego              Juego   @relation(fields: [Juego_JuegoID], references: [JuegoID])
-  @@id([CalificacionID, Usuario_UsuarioID, Juego_JuegoID, Juego_CategoriaID])
 }
 
 model Venta {
-  VentaID           Int  
+  VentaID           Int   @id @default(autoincrement())
   Usuario_UsuarioID Int
   Juego_JuegoID     Int
   Juego_CategoriaID Int
   Fecha             DateTime
   Codigo            String @db.VarChar(30)
-  MontoPagado       String @db.VarChar(100)
+  MontoPagado       Float
   Usuario           Usuario @relation(fields: [Usuario_UsuarioID], references: [UsuarioID])
   Juego             Juego   @relation(fields: [Juego_JuegoID], references: [JuegoID])
-  @@id([VentaID, Usuario_UsuarioID, Juego_JuegoID, Juego_CategoriaID])
 }
 
 model Noticia {
@@ -90,5 +98,3 @@ model Juego_Plataforma {
   Juego        Juego      @relation(fields: [JuegoID], references: [JuegoID])
   @@id([PlataformaID, JuegoID])
 }
-
-

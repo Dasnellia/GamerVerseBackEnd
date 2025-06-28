@@ -1,12 +1,12 @@
-import express, { Request, Response } from "express"
+/*import express, { Request, Response } from "express"
 import { PrismaClient } from '../generated/prisma'
 
+const prisma = new PrismaClient()
 
 const VentasController = () => {
     const router = express.Router()
 
     router.get("/", async (req : Request, resp : Response) => {
-        const prisma = new PrismaClient()
     
         const estado = req.query.estado
     
@@ -22,7 +22,6 @@ const VentasController = () => {
     })
     
     router.get("/:id", async (req : Request, resp : Response) => {
-        const prisma = new PrismaClient()
         const id = parseInt(req.params.id)
     
         const Venta = await prisma.venta.findUnique({
@@ -80,7 +79,7 @@ const VentasController = () => {
         try {
             const VentaModificado = await prisma.venta.update({
                 where : {
-                    VentaId : VentaId
+                    VentaID : VentaId
                 },
                 data : Venta
             })
@@ -96,7 +95,6 @@ const VentasController = () => {
     })
     
     router.delete("/:id", async (req : Request, resp : Response) => {
-        const prisma = new PrismaClient()
         const VentaId = parseInt(req.params.id)
     
         if (VentaId == undefined) {
@@ -126,4 +124,4 @@ const VentasController = () => {
     return router
 }
 
-export default VentasController
+export default VentasController*/
