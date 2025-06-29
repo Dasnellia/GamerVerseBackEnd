@@ -1,0 +1,3 @@
+GET http://localhost:3001/api/listauser
+Accept: application/json
+Authorization: 123

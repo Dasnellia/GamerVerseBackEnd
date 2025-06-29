@@ -1,9 +1,12 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
 import usuarioRoutes from './routes/usuarioRoutes';
 import juegoRoutes from './routes/juegoRoutes';
-import path from 'path';
+import carritoRoutes from './routes/carritoRoutes';
+import noticiaRoutes from './routes/noticiaRoutes';
+import listauserRoutes from './routes/listauserRoutes';
 
 dotenv.config();
 
@@ -16,8 +19,18 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+app.use((req: any, res, next) => {
+  // SIMULA ROL DE ADMIN - Lo agregue en la BD para que funcione
+  req.user = { id: 3, rol: 'ADMIN' }; 
+  next();
+});
+
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/juegos', juegoRoutes);
+app.use('/api/carrito', carritoRoutes);
+app.use('/api/noticia', noticiaRoutes);
+app.use('/api/listauser', listauserRoutes);
 app.use('/static', express.static(rutaImagenes));
 
 const PORT = process.env.PORT || 3001;
