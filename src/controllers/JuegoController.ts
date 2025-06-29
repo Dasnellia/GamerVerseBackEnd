@@ -66,22 +66,3 @@ export const eliminarTodos = async (_req: Request, res: Response) => {
         res.status(500).json({ error: 'Error al eliminar todos los juegos', detalle: error });
     }
 };
-
-export const dejarCalificacion = async (req: Request, res: Response) => {
-    const { Usuario_UsuarioID, Juego_JuegoID, Valoracion, Comentario } = req.body;
-
-    try {
-        const calificacion = await prisma.calificacion.create({
-            data: {
-              Usuario_UsuarioID: Usuario_UsuarioID,
-              Juego_JuegoID: Juego_JuegoID,
-              Valoracion: Valoracion,
-              Comentario: Comentario,
-            },
-          });
-
-        res.status(201).json(calificacion);
-    } catch (error) {
-        res.status(500).json({ error: 'Error al dejar la reseña' });
-    }
-};

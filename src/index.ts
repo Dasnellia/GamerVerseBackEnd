@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import usuarioRoutes from './routes/usuarioRoutes';
 import juegoRoutes from './routes/juegoRoutes';
+import calificacionesRoutes from './routes/calificacionRoutes';
 import path from 'path';
 
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(cors({
 app.use(express.json());
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/juegos', juegoRoutes);
+app.use('/api/calificaciones', calificacionesRoutes);
 app.use('/static', express.static(rutaImagenes));
 
 const PORT = process.env.PORT || 3001;

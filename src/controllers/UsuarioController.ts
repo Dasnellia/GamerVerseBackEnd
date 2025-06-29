@@ -70,7 +70,8 @@ export const listar = async (_req: Request, res: Response) => {
 };
 
 export const editar = async (req: Request, res: Response) => {
-  const id = Number(req.params.id);
+  const id = parseInt(req.params.id);
+  console.log(id)
   try {
     const usuario = await UsuarioService.actualizarUsuario(id, req.body);
     res.json(usuario);

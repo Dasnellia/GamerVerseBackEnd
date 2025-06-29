@@ -1,0 +1,7 @@
+POST http://localhost:3001/api/calificaciones/verificarCompra
+Content-Type: application/json
+
+{
+  "Usuario_UsuarioID": 1,
+  "Juego_JuegoID": 6
+}

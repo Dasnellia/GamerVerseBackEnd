@@ -77,11 +77,19 @@ export const iniciarSesion = async (correoONickname: string, contrasena: string)
 };
 export const obtenerUsuarios = () => prisma.usuario.findMany();
 
-export const actualizarUsuario = (id: number, data: any) =>
-  prisma.usuario.update({
+export const actualizarUsuario = (id: number, data: any) => {
+  // Concatenar nombre y apellidos en el campo "Nombre"
+  const nombreCompleto = `${data.nombre} ${data.apellidos}`;
+
+  // Actualizar el usuario en la base de datos
+  return prisma.usuario.update({
     where: { UsuarioID: id },
-    data,
+    data: {
+      Nombre: nombreCompleto,
+      Correo: data.correoElectronico,
+    }
   });
+};
 
 export const eliminarUsuario = (id: number) =>
   prisma.usuario.delete({ where: { UsuarioID: id } });

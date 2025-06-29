@@ -10,7 +10,6 @@ router.post('/', juegoController.crearJuego);
 router.put('/:id', juegoController.actualizarJuego);
 router.delete('/:id', juegoController.eliminarJuego);
 router.get('/', juegoController.obtenerTodos);
-router.post('/resena', juegoController.dejarCalificacion);
 
 //TEMPORAL PARA ELIMINAR JUEGOS
 router.delete('/', juegoController.eliminarTodos);
