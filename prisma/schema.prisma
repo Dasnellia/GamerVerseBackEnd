@@ -27,11 +27,7 @@ model Usuario {
   Nombre      String    @db.VarChar(50)
   Pais        String?   @db.VarChar(50)
   Foto        String?   @db.VarChar(255)
-<<<<<<< HEAD
   Token       String?   @db.Text
-=======
-  Token       String?   @db.VarChar(50)
->>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d
   Admin       Boolean   @default(false)
   Verificado  Boolean   @default(false)
   Calificaciones Calificacion[]

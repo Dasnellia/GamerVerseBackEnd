@@ -1,102 +1,83 @@
-import { Request, Response, RequestHandler } from 'express'; 
-import * as carritoService from '../services/carritoService'; 
+import { Request, Response } from 'express';
+import * as carritoService from '../services/carritoService';
 
+// Extiende Request para incluir req.user
 interface AuthenticatedRequest extends Request {
-  user?: { id: number }; 
+  user?: { userId: number; rol: string };
 }
 
-// GET: Obtener carrito
-export const getCarrito: RequestHandler = async (req: AuthenticatedRequest, res: Response) => {
-  const usuarioID = req.user?.id;
-
-  if (usuarioID === undefined) {
-    res.status(401).json({ msg: "No autorizado: Usuario no identificado." });
-    return; 
+// GET /api/carrito
+export const getCarrito = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  if (!req.user?.userId) {
+    res.status(401).json({ msg: 'No autorizado. Debes iniciar sesión.' });
+    return;
   }
 
   try {
-    const carritoData = await carritoService.getCarritoItems(usuarioID);
-    res.json(carritoData);
+    const carrito = await carritoService.getCarritoItems(req.user.userId);
+    res.status(200).json(carrito);
   } catch (error: any) {
     console.error("Error en getCarrito:", error);
-    res.status(500).json({ msg: error.message || "Error interno del servidor al obtener el carrito." });
+    res.status(500).json({ msg: error.message || "Error al obtener el carrito." });
   }
 };
 
-// POST: Añadir o actualizar un ítem en el carrito.
-export const addUpCarritoItem: RequestHandler = async (req: AuthenticatedRequest, res: Response) => {
-  const usuarioID = req.user?.id;
-  const { juegoId, cantidad } = req.body;
-
-  if (usuarioID === undefined) {
-    res.status(401).json({ msg: "No autorizado: Usuario no identificado." });
-    return; 
+// POST /api/carrito/items
+export const addUpCarritoItem = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  if (!req.user?.userId) {
+    res.status(401).json({ msg: 'No autorizado. Debes iniciar sesión.' });
+    return;
   }
-  if (juegoId === undefined || typeof juegoId !== 'number' || cantidad === undefined || typeof cantidad !== 'number' || cantidad < 1) {
-    res.status(400).json({ msg: "Debe enviar 'juegoId' (número) y 'cantidad' (número > 0)." });
-    return; 
+
+  const { juegoId, cantidad } = req.body;
+  if (typeof juegoId !== 'number' || typeof cantidad !== 'number' || cantidad <= 0) {
+    res.status(400).json({ msg: "Datos inválidos para el ítem del carrito." });
+    return;
   }
 
   try {
-    const carritoActualizado = await carritoService.addUpCarritoItem(usuarioID, juegoId, cantidad);
-    res.status(200).json({
-      msg: "Ítem añadido/actualizado en el carrito con éxito.",
-      ...carritoActualizado, 
-    });
+    const updated = await carritoService.addUpCarritoItem(req.user.userId, juegoId, cantidad);
+    res.status(200).json(updated);
   } catch (error: any) {
     console.error("Error en addUpCarritoItem:", error);
-    if (error.message === "Juego no encontrado." || error.message.startsWith("La cantidad solicitada")) {
-      res.status(404).json({ msg: error.message });
-      return; 
-    }
-    res.status(500).json({ msg: error.message || "Error interno del servidor al añadir/actualizar ítem." });
+    res.status(400).json({ msg: error.message || "Error al añadir/actualizar ítem." });
   }
 };
 
-// DELETE: Eliminar un ítem específico del carrito.
-export const borrarCarritoItem: RequestHandler = async (req: AuthenticatedRequest, res: Response) => {
-  const usuarioID = req.user?.id;
-  const juegoID = parseInt(req.params.JuegoID);
-
-  if (usuarioID === undefined) {
-    res.status(401).json({ msg: "No autorizado: Usuario no identificado." });
-    return; 
+// DELETE /api/carrito/items/:JuegoID
+export const borrarCarritoItem = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  if (!req.user?.userId) {
+    res.status(401).json({ msg: 'No autorizado. Debes iniciar sesión.' });
+    return;
   }
+
+  const juegoID = parseInt(req.params.JuegoID);
   if (isNaN(juegoID)) {
     res.status(400).json({ msg: "ID de juego inválido." });
-    return; 
+    return;
   }
 
   try {
-    const carritoActualizado = await carritoService.borrarCarritoItem(usuarioID, juegoID);
-    res.status(200).json({
-      msg: "Ítem eliminado del carrito con éxito.",
-      ...carritoActualizado, 
-    });
+    const updated = await carritoService.borrarCarritoItem(req.user.userId, juegoID);
+    res.status(200).json(updated);
   } catch (error: any) {
     console.error("Error en borrarCarritoItem:", error);
-    if (error.message === "El juego no se encontró en el carrito de este usuario.") {
-      res.status(404).json({ msg: error.message });
-      return; 
-    }
-    res.status(500).json({ msg: error.message || "Error interno del servidor al eliminar item." });
+    res.status(400).json({ msg: error.message || "Error al eliminar ítem." });
   }
 };
 
-// DELETE: Vaciar el carrito
-export const limpiarCarrito: RequestHandler = async (req: AuthenticatedRequest, res: Response) => {
-  const usuarioID = req.user?.id;
-
-  if (usuarioID === undefined) {
-    res.status(401).json({ msg: "No autorizado: Usuario no identificado." });
-    return; 
+// DELETE /api/carrito
+export const limpiarCarrito = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  if (!req.user?.userId) {
+    res.status(401).json({ msg: 'No autorizado. Debes iniciar sesión.' });
+    return;
   }
 
   try {
-    const result = await carritoService.limpiarCarrito(usuarioID);
+    const result = await carritoService.limpiarCarrito(req.user.userId);
     res.status(200).json(result);
   } catch (error: any) {
     console.error("Error en limpiarCarrito:", error);
-    res.status(500).json({ msg: error.message || "Error interno del servidor al vaciar el carrito." });
+    res.status(500).json({ msg: error.message || "Error al vaciar el carrito." });
   }
 };

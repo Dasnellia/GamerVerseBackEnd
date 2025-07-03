@@ -1,13 +1,13 @@
 ### Obtener Carrito
 GET http://localhost:3001/api/carrito
-Authorization: Bearer 123
 Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE3LCJyb2wiOiJVU0VSIiwiaWF0IjoxNzUxNTgxNzYzLCJleHAiOjE3NTE1ODUzNjN9.scPLt1luj0HRc7CatSOdpkrlhj_wTkVJDE-OI6YSg8Q
 
 ### Añadir/Actualizar Ítem en Carrito
 POST http://localhost:3001/api/carrito/items
 Content-Type: application/json
-Authorization: Bearer 123
 Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE3LCJyb2wiOiJVU0VSIiwiaWF0IjoxNzUxNTgxNzYzLCJleHAiOjE3NTE1ODUzNjN9.scPLt1luj0HRc7CatSOdpkrlhj_wTkVJDE-OI6YSg8Q
 
 {
   "juegoId": 1,   
@@ -16,10 +16,10 @@ Accept: application/json
 
 ### Eliminar Ítem Específico del Carrito
 DELETE http://localhost:3001/api/carrito/items/1
-Authorization: Bearer 123
 Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE3LCJyb2wiOiJVU0VSIiwiaWF0IjoxNzUxNTgxNzYzLCJleHAiOjE3NTE1ODUzNjN9.scPLt1luj0HRc7CatSOdpkrlhj_wTkVJDE-OI6YSg8Q
 
 ### Vaciar Carrito
 DELETE http://localhost:3001/api/carrito
-Authorization: Bearer 123
 Accept: application/json
+Authorization: Bearer 12eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE3LCJyb2wiOiJVU0VSIiwiaWF0IjoxNzUxNTgxNzYzLCJleHAiOjE3NTE1ODUzNjN9.scPLt1luj0HRc7CatSOdpkrlhj_wTkVJDE-OI6YSg8Q3
