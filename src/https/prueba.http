@@ -1,0 +1,38 @@
+### Registro de usuario
+POST http://localhost:3001/api/usuarios/registro
+Content-Type: application/json
+
+{
+  "nickname": "gamer123",
+  "correo": "alemichellelohe@gmail.com",
+  "contrasena": "123455678",
+  "confirmarContrasena": "123455678",
+  "pais": "Peru",
+  "name": "Gamer Pro",
+  "imagen": "https://example.com/avatar.jpg"
+}
+
+### Iniciar sesión
+POST http://localhost:3001/api/usuarios/login
+Content-Type: application/json
+
+{
+  "correo": "alemichellelohe@gmail.com",
+  "contrasena": "123455678"
+}
+
+### Obtener todos los usuarios
+GET http://localhost:3001/api/usuarios
+
+### Editar un usuario
+PUT http://localhost:3001/api/usuarios/13
+Content-Type: application/json
+
+{
+  "name": "Gamer Editado",
+  "nickname": "proGamer",
+  "Verificado": true
+}
+
+### Eliminar un usuario
+DELETE http://localhost:3001/api/usuarios/15

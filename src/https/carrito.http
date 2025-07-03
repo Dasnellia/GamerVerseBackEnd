@@ -1,0 +1,25 @@
+### Obtener Carrito
+GET http://localhost:3001/api/carrito
+Authorization: Bearer 123
+Accept: application/json
+
+### Añadir/Actualizar Ítem en Carrito
+POST http://localhost:3001/api/carrito/items
+Content-Type: application/json
+Authorization: Bearer 123
+Accept: application/json
+
+{
+  "juegoId": 1,   
+  "cantidad": 2   
+}
+
+### Eliminar Ítem Específico del Carrito
+DELETE http://localhost:3001/api/carrito/items/1
+Authorization: Bearer 123
+Accept: application/json
+
+### Vaciar Carrito
+DELETE http://localhost:3001/api/carrito
+Authorization: Bearer 123
+Accept: application/json

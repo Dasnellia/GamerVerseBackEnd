@@ -1,0 +1,113 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Categoria {
+  CategoriaID Int      @id @default(autoincrement())
+  Nombre      String  @db.VarChar(50)
+  Juegos       Juego[]
+}
+
+model Usuario {
+  UsuarioID   Int       @id @default(autoincrement())
+  Correo      String    @unique @db.VarChar(100)
+  Password    String    @db.VarChar(100)
+  Nombre      String    @db.VarChar(50)
+  Pais        String?   @db.VarChar(50)
+  Foto        String?   @db.VarChar(255)
+  Token       String?   @db.Text
+  Admin       Boolean   @default(false)
+  Verificado  Boolean   @default(false)
+  Calificaciones Calificacion[]
+  Ventas        Venta[]
+  CarritoItems   CarritoItem[]
+}
+
+model Juego {
+  JuegoID           Int        @id @default(autoincrement())
+  Nombre            String     @db.VarChar(100)
+  Precio            Float
+  Oferta            Int        @default(0)
+  Estado            Boolean
+  Categoria_CategoriaID Int
+  Categoria         Categoria @relation(fields: [Categoria_CategoriaID], references: [CategoriaID])
+  Calificaciones    Calificacion[]
+  Ventas            Venta[]
+  Plataformas       Juego_Plataforma[]
+  Stock             Int
+  Rating            Float
+  Imagen            String     @db.VarChar(255)
+  Descripcion       String
+  DescripcionLarga  String
+  TrailerURL        String     @db.VarChar(255)
+  Galeria           String[]
+  Caracteristicas   String[]
+  Lanzamiento       DateTime
+  Descuento         Int        @default(0)
+  CarritoItems      CarritoItem[]
+}
+
+model Plataforma {
+  PlataformaID Int      @id @default(autoincrement())
+  Nombre        String @db.VarChar(100)
+  Juegos        Juego_Plataforma[]
+}
+
+model Calificacion {
+  CalificacionID     Int   @id @default(autoincrement())
+  Usuario_UsuarioID  Int 
+  Juego_JuegoID      Int
+  Valoracion         String @db.VarChar(100)
+  Comentario         String @db.VarChar(1000)
+  Usuario            Usuario @relation(fields: [Usuario_UsuarioID], references: [UsuarioID])
+  Juego              Juego   @relation(fields: [Juego_JuegoID], references: [JuegoID])
+}
+
+model Venta {
+  VentaID           Int   @id @default(autoincrement())
+  Usuario_UsuarioID Int
+  Juego_JuegoID     Int
+  Juego_CategoriaID Int
+  Fecha             DateTime
+  Codigo            String @db.VarChar(30)
+  MontoPagado       Float
+  Usuario           Usuario @relation(fields: [Usuario_UsuarioID], references: [UsuarioID])
+  Juego             Juego   @relation(fields: [Juego_JuegoID], references: [JuegoID])
+}
+
+model Noticia {
+  NoticiaID       Int     @id @default(autoincrement())
+  Foto            String  @db.VarChar(255)
+  Titulo          String  @db.VarChar(100)
+  Descripcion     String  @db.VarChar(1000)
+}
+
+model Juego_Plataforma {
+  PlataformaID Int
+  JuegoID      Int
+  Plataforma   Plataforma @relation(fields: [PlataformaID], references: [PlataformaID])
+  Juego        Juego      @relation(fields: [JuegoID], references: [JuegoID])
+  @@id([PlataformaID, JuegoID])
+}
+
+model CarritoItem {
+  CarritoItemID Int     @id @default(autoincrement())
+  UsuarioID     Int
+  JuegoID       Int
+  Cantidad      Int     @default(1)
+  Usuario       Usuario @relation(fields: [UsuarioID], references: [UsuarioID])
+  Juego         Juego   @relation(fields: [JuegoID], references: [JuegoID])
+  @@unique([UsuarioID, JuegoID])
+}

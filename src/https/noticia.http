@@ -1,0 +1,37 @@
+### Obtener Todas las Noticias
+GET http://localhost:3001/api/noticia
+Accept: application/json
+
+### Obtener Noticia por ID
+GET http://localhost:3001/api/noticia/1
+Accept: application/json
+
+### Crear Noticia (Requiere Admin)
+POST http://localhost:3001/api/noticia
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 123
+
+{
+  "Titulo": "¡Grandes Novedades de Verano!",
+  "Descripcion": "Descubre los eventos y ofertas más emocionantes que llegan a tus juegos favoritos.",
+  "Foto": "https://example.com/noticia_verano.jpg"
+}
+
+### Actualizar Noticia (Requiere Admin)
+PUT http://localhost:3001/api/noticia/1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer 123
+
+{
+  "Titulo": "Noticia Actualizada: ¡Parche 1.2 Ya Disponible!",
+  "Descripcion": "Conoce todos los cambios y mejoras del último parche para tu juego preferido.",
+  "Foto": "https://example.com/parche_noticia.jpg"
+}
+
+
+### Eliminar Noticia (Requiere Admin)
+DELETE http://localhost:3001/api/noticia/1
+Accept: application/json
+Authorization: Bearer 123

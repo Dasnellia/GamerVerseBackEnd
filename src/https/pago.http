@@ -1,0 +1,57 @@
+### Pago
+POST http://localhost:3001/api/pago/realizar
+Content-Type: application/json
+
+{
+  "usuarioId": 1,
+  "carritoItems": [
+    {
+      "juegoId": 1,
+      "cantidad": 2
+    },
+    {
+      "juegoId": 3,
+      "cantidad": 1
+    }
+  ]
+}
+
+### Recibir en el correo electrónico las claves de los juegos adquiridos al finalizar la compra
+POST http://localhost:3001/api/pago/realizar
+Content-Type: application/json
+
+{
+  "usuarioId": 1,
+  "carritoItems": [
+    {
+      "juegoId": 1,
+      "cantidad": 2
+    },
+    {
+      "juegoId": 3,
+      "cantidad": 1
+    }
+  ]
+}
+
+### Dejar una reseña de los juegos que se han comprado previamente
+POST http://localhost:3001/api/calificacion/dejar
+Content-Type: application/json
+
+{
+  "usuarioId": 1,
+  "juegoId": 2,
+  "calificacion": 4,
+  "comentario": "chvr el juego"
+}
+
+### Editar la información del usuario (por ejemplo, nombre, correo, etc.)
+PUT http://localhost:3001/api/usuarios/1
+Content-Type: application/json
+
+{
+  "name": "Gamer Editado",
+  "nickname": "proGamer",
+  "correo": "nuevoemail@mail.com",
+  "pais": "Perú"
+}
