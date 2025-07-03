@@ -2,22 +2,30 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+<<<<<<< HEAD
 import jwt from 'jsonwebtoken'; 
 
 // Importaciones de rutas
+=======
+>>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d
 import usuarioRoutes from './routes/usuarioRoutes';
 import juegoRoutes from './routes/juegoRoutes';
 import carritoRoutes from './routes/carritoRoutes';
 import noticiaRoutes from './routes/noticiaRoutes';
+<<<<<<< HEAD
 import listausersRoutes from './routes/listauserRoutes';
 
 import { PrismaClient } from './generated/prisma'; 
+=======
+import listauserRoutes from './routes/listauserRoutes';
+>>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d
 
 dotenv.config();
 
 const app = express();
 const rutaImagenes = path.join(process.cwd(), 'imagenes');
 
+<<<<<<< HEAD
 // Configuración de CORS
 app.use(cors({
   origin: 'http://localhost:5173', // Permite solicitudes solo desde este origen
@@ -74,10 +82,26 @@ app.use((req: any, res, next) => {
 // ====================================================================
 // Rutas de la API (asegúrate de que los prefijos y nombres coincidan)
 // ====================================================================
+=======
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
+
+app.use(express.json());
+
+app.use((req: any, res, next) => {
+  // SIMULA ROL DE ADMIN - Lo agregue en la BD para que funcione
+  req.user = { id: 3, rol: 'ADMIN' }; 
+  next();
+});
+
+>>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/juegos', juegoRoutes);
 app.use('/api/carrito', carritoRoutes);
 app.use('/api/noticia', noticiaRoutes);
+<<<<<<< HEAD
 app.use('/api/admin/users', listausersRoutes); 
 app.use('/static', express.static(rutaImagenes));
 
@@ -101,3 +125,12 @@ process.on('SIGINT', async () => {
   console.log('Prisma Client desconectado debido a SIGINT (Ctrl+C).');
   process.exit(0);
 });
+=======
+app.use('/api/listauser', listauserRoutes);
+app.use('/static', express.static(rutaImagenes));
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Servidor escuchando en http://localhost:${PORT}`);
+});
+>>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d
