@@ -4,15 +4,10 @@ Content-Type: application/json
 
 {
   "nickname": "gamer123",
-<<<<<<< HEAD
-  "correo": "alemichellelohe@gmail.com",
+  "correo": "gamer123@mail.com",
   "contrasena": "123455678",
   "confirmarContrasena": "123455678",
   "pais": "Peru",
-=======
-  "correo": "gamer@mail.com",
-  "contrasena": "12345678",
->>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d
   "name": "Gamer Pro",
   "imagen": "https://example.com/avatar.jpg"
 }
@@ -22,39 +17,21 @@ POST http://localhost:3001/api/usuarios/login
 Content-Type: application/json
 
 {
-<<<<<<< HEAD
-  "correo": "alemichellelohe@gmail.com",
+  "correo": "gamer123@mail.com",
   "contrasena": "123455678"
-=======
-  "correo": "gamer@mail.com",
-  "contrasena": "12345678"
->>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d
 }
 
 ### Obtener todos los usuarios
 GET http://localhost:3001/api/usuarios
 
 ### Editar un usuario
-<<<<<<< HEAD
 PUT http://localhost:3001/api/usuarios/13
-=======
-PUT http://localhost:3001/api/usuarios/1
->>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d
 Content-Type: application/json
 
 {
   "name": "Gamer Editado",
-<<<<<<< HEAD
-  "nickname": "proGamer",
-  "Verificado": true
-}
-
-### Eliminar un usuario
-DELETE http://localhost:3001/api/usuarios/15
-=======
   "nickname": "proGamer"
 }
 
 ### Eliminar un usuario
-DELETE http://localhost:3001/api/usuarios/5
->>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d
+DELETE http://localhost:3001/api/usuarios/16

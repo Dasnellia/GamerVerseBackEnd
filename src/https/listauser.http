@@ -1,9 +1,3 @@
-<<<<<<< HEAD
 GET http://localhost:3001/api/admin/users
 Accept: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInRpcG8iOnRydWUsImlhdCI6MTc1MTUwMDI1MCwiZXhwIjoxNzUxNTAzODUwfQ.9qTj18bDjXRnl659qlTNgZPa6EzdAEwzhmCtaWQwu3E
-=======
-GET http://localhost:3001/api/listauser
-Accept: application/json
-Authorization: 123
->>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d

@@ -1,28 +1,26 @@
 import { Router } from 'express';
-import NoticiasController from '../controllers/NoticiaController'; 
+// Importa las funciones del controlador individualmente
+import * as NoticiaController from '../controllers/NoticiaController'; 
 
 const router = Router();
 
-const noticiasRouter = NoticiasController();
-
-// --- Rutas Públicas  ---
+// --- Rutas Públicas   ---
 
 // GET: Obtener todas las noticias
-router.get("/", NoticiasController().get("/", (req, res) => {})); 
+router.get("/", NoticiaController.getAllNoticias);
 
 // GET: Obtener una noticia por ID
-router.get("/:id", NoticiasController().get("/:id", (req, res) => {})); 
+router.get("/:id", NoticiaController.getNoticiaById);
 
-// --- Rutas Protegidas  ---
+// --- Rutas Protegidas   ---
 
-// POST: Crear una nueva noticia
-router.post("/", NoticiasController().post("/", (req, res) => {})); 
+// POST: Crear una nueva noticia (protegida por authenticateAdmin)
+router.post("/", NoticiaController.authenticateAdmin, NoticiaController.crearNoticia);
 
-// PUT: Actualizar una noticia existente
-router.put("/:id", NoticiasController().put("/:id", (req, res) => {}));
+// PUT: Actualizar una noticia existente (protegida por authenticateAdmin)
+router.put("/:id", NoticiaController.authenticateAdmin, NoticiaController.editarNoticia);
 
-// DELETE: Eliminar una noticia
-router.delete("/:id", NoticiasController().delete("/:id", (req, res) => {})); 
-
+// DELETE: Eliminar una noticia (protegida por authenticateAdmin)
+router.delete("/:id", NoticiaController.authenticateAdmin, NoticiaController.borrarNoticia);
 
 export default router;

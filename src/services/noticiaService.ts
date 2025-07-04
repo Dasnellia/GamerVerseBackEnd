@@ -40,13 +40,14 @@ export const obtenerNoticia = async (noticiaID: number) => {
 };
 
 // Crea una nueva noticia.
-export const crearNoticia = async (data: { Titulo: string; Descripcion: string; Foto?: string }) => {
+// Foto ahora puede ser string (URL) o null desde el frontend, pero se guardará como string.
+export const crearNoticia = async (data: { Titulo: string; Descripcion: string; Foto?: string | null }) => {
   try {
     const nuevaNoticia = await prisma.noticia.create({
       data: {
         Titulo: data.Titulo,
         Descripcion: data.Descripcion,
-        Foto: data.Foto || '',
+        Foto: data.Foto || '', 
       },
     });
     return nuevaNoticia;
@@ -57,15 +58,28 @@ export const crearNoticia = async (data: { Titulo: string; Descripcion: string; 
 };
 
 // Actualiza una noticia existente.
-export const editarNoticia = async (noticiaID: number, data: { Titulo?: string; Descripcion?: string; Foto?: string }) => {
+export const editarNoticia = async (noticiaID: number, data: { Titulo?: string; Descripcion?: string; Foto?: string | null }) => {
   try {
+    const updatePayload: {
+      Titulo?: string;
+      Descripcion?: string;
+      Foto?: string; 
+    } = {};
+
+    if (data.Titulo !== undefined) {
+      updatePayload.Titulo = data.Titulo;
+    }
+    if (data.Descripcion !== undefined) {
+      updatePayload.Descripcion = data.Descripcion;
+    }
+    
+    if (data.Foto !== undefined) {
+      updatePayload.Foto = data.Foto === null ? '' : data.Foto; 
+    }
+
     const noticiaActualizada = await prisma.noticia.update({
       where: { NoticiaID: noticiaID },
-      data: {
-        Titulo: data.Titulo,
-        Descripcion: data.Descripcion,
-        Foto: data.Foto,
-      },
+      data: updatePayload,
     });
     return noticiaActualizada;
   } catch (error: any) {

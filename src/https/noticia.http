@@ -3,14 +3,14 @@ GET http://localhost:3001/api/noticia
 Accept: application/json
 
 ### Obtener Noticia por ID
-GET http://localhost:3001/api/noticia/1
+GET http://localhost:3001/api/noticia/4
 Accept: application/json
 
 ### Crear Noticia (Requiere Admin)
 POST http://localhost:3001/api/noticia
 Content-Type: application/json
 Accept: application/json
-Authorization: Bearer 123
+Authorization: Bearer TOKEN
 
 {
   "Titulo": "¡Grandes Novedades de Verano!",
@@ -19,10 +19,10 @@ Authorization: Bearer 123
 }
 
 ### Actualizar Noticia (Requiere Admin)
-PUT http://localhost:3001/api/noticia/1
+PUT http://localhost:3001/api/noticia/2
 Content-Type: application/json
 Accept: application/json
-Authorization: Bearer 123
+Authorization: Bearer TOKEN
 
 {
   "Titulo": "Noticia Actualizada: ¡Parche 1.2 Ya Disponible!",
@@ -32,6 +32,6 @@ Authorization: Bearer 123
 
 
 ### Eliminar Noticia (Requiere Admin)
-DELETE http://localhost:3001/api/noticia/1
+DELETE http://localhost:3001/api/noticia/2
 Accept: application/json
-Authorization: Bearer 123
+Authorization: Bearer TOKEN

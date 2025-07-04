@@ -1,27 +1,17 @@
+// src/services/usuarioService.ts
+
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import nodemailer from 'nodemailer';
-import crypto from 'crypto';
 import { PrismaClient } from "../generated/prisma";
-<<<<<<< HEAD
-import { env } from 'process';
+// --- ¡CAMBIO CRÍTICO AQUÍ! ---
+// La ruta correcta para tu mailer.js es '../utils/mailer'
+import { enviarCorreoVerificacion, enviarCorreoRestablecimientoContrasena } from '../services/emailService';
+
 
 const prisma = new PrismaClient();
-
-// const JWT_SECRET = process.env.JWT_SECRET || 'token'; // Ya no es necesaria si usas process.env directamente
-=======
-
-const prisma = new PrismaClient();
-
-const JWT_SECRET = process.env.JWT_SECRET || 'token';
->>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d
-
-import { enviarCorreoVerificacion } from './emailService';
 
 export const registrarUsuario = async (data: any) => {
   const { nickname, correo, contrasena, pais } = data;
-
-<<<<<<< HEAD
   console.log(`[RegistrarUsuario] Inicio del proceso de registro para: ${correo}`);
 
   const existeCorreo = await prisma.usuario.findUnique({ where: { Correo: correo } });
@@ -52,42 +42,22 @@ export const registrarUsuario = async (data: any) => {
   }
 
   await prisma.usuario.create({
-=======
-  const existeCorreo = await prisma.usuario.findUnique({ where: { Correo: correo } });
-  if (existeCorreo) throw new Error('El correo ya está registrado.');
-
-  const hash = await bcrypt.hash(contrasena, 10);
-  const token = jwt.sign({ correo }, process.env.JWT_SECRET!, { expiresIn: '10m' });
-
-  // ENVÍA CORREO
-  await enviarCorreoVerificacion(correo, token);
-
-  // NO lo guardes aún hasta que confirme (esto es opcional según cómo desees validar)
-    await prisma.usuario.create({
->>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d
     data: {
       Nombre: nickname,
       Correo: correo,
       Password: hash,
       Pais: pais,
-<<<<<<< HEAD
       Foto: null,
-=======
->>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d
       Admin: false,
       Verificado: false,
       Token: token
     }
   });
-<<<<<<< HEAD
   console.log(`[RegistrarUsuario] Usuario ${correo} creado en la base de datos.`);
-=======
->>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d
 
   return { mensaje: 'Correo de verificación enviado. Revisa tu bandeja.' };
 };
 
-<<<<<<< HEAD
 export const iniciarSesion = async (correoONickname: string, contrasena: string) => {
   const usuario = await prisma.usuario.findFirst({
     where: {
@@ -97,22 +67,6 @@ export const iniciarSesion = async (correoONickname: string, contrasena: string)
       ],
     },
   });
-=======
-
-export const iniciarSesion = async (correoONickname: string, contrasena: string) => {
-  const esCorreo = correoONickname.includes('@');
-  const whereClause = esCorreo ? { Correo: correoONickname } : { Nombre: correoONickname };
-
-    // Cambiar findUnique por findFirst
-    const usuario = await prisma.usuario.findFirst({
-      where: {
-        OR: [
-          { Correo: correoONickname },
-          { Nombre: correoONickname },
-        ],
-      },
-    });
->>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d
 
   if (!usuario) {
     throw new Error('Usuario no encontrado');
@@ -123,63 +77,79 @@ export const iniciarSesion = async (correoONickname: string, contrasena: string)
     throw new Error('Contraseña incorrecta');
   }
 
-<<<<<<< HEAD
-=======
-  // 👇 Verificación del correo
->>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d
   if (!usuario.Verificado) {
     throw new Error('Tu cuenta aún no ha sido verificada. Revisa tu correo electrónico.');
   }
 
   const token = jwt.sign(
-<<<<<<< HEAD
-    { 
-      userId: usuario.UsuarioID, 
-      rol: usuario.Admin ? 'ADMIN' : 'USER' 
+    {
+      userId: usuario.UsuarioID,
+      rol: usuario.Admin ? 'ADMIN' : 'USER'
     },
-=======
-    { id: usuario.UsuarioID, tipo: usuario.Admin },
->>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d
     process.env.JWT_SECRET!,
     { expiresIn: '1h' }
   );
 
   return { token, usuario };
 };
-<<<<<<< HEAD
 
 export const obtenerUsuarios = () => prisma.usuario.findMany();
 
-// --- ¡CORRECCIÓN CLAVE AQUÍ! ---
-// La función actualizarUsuario ahora acepta un objeto 'data' genérico
-// que puede contener cualquier campo del modelo Usuario.
 export const actualizarUsuario = (id: number, data: any) => {
-  // Antes:
-  // const nombreCompleto = `${data.nombre} ${data.apellidos}`;
-  // return prisma.usuario.update({
-  //   where: { UsuarioID: id },
-  //   data: {
-  //     Nombre: nombreCompleto,
-  //     Correo: data.correoElectronico,
-  //   }
-  // });
-
-  // Ahora, simplemente pasamos el objeto 'data' directamente a Prisma.
-  // Prisma se encargará de actualizar solo los campos presentes en 'data'.
   return prisma.usuario.update({
     where: { UsuarioID: id },
-    data: data, // ¡Esto permite actualizar cualquier campo, incluido 'Verificado'!
+    data: data,
   });
 };
-=======
-export const obtenerUsuarios = () => prisma.usuario.findMany();
-
-export const actualizarUsuario = (id: number, data: any) =>
-  prisma.usuario.update({
-    where: { UsuarioID: id },
-    data,
-  });
->>>>>>> ad084610cd1ed3b5398396181204518fc7af5e0d
 
 export const eliminarUsuario = (id: number) =>
   prisma.usuario.delete({ where: { UsuarioID: id } });
+
+export const verificarTokenYCuenta = async (token: string) => {
+  const jwtSecret = process.env.JWT_SECRET;
+  if (!jwtSecret) {
+    console.error("[verificarTokenYCuenta] ERROR: JWT_SECRET no está definido en las variables de entorno.");
+    throw new Error("Error de configuración del servidor: JWT_SECRET no definido.");
+  }
+
+  try {
+    const decoded: any = jwt.verify(token, jwtSecret);
+    const correoVerificado = decoded.correo;
+
+    const usuario = await prisma.usuario.findUnique({
+      where: { Correo: correoVerificado },
+    });
+
+    if (!usuario) {
+      throw new Error('Usuario no encontrado para el token proporcionado o correo no existe.');
+    }
+
+    if (usuario.Verificado) {
+      console.log(`[verificarTokenYCuenta] Usuario ${correoVerificado} ya estaba verificado.`);
+      return { mensaje: 'Tu cuenta ya había sido verificada.' };
+    }
+
+    await prisma.usuario.update({
+      where: { UsuarioID: usuario.UsuarioID },
+      data: {
+        Verificado: true,
+        Token: null
+      },
+    });
+
+    console.log(`[verificarTokenYCuenta] Usuario ${correoVerificado} verificado exitosamente en la base de datos.`);
+    return { mensaje: '¡Tu cuenta ha sido verificada con éxito!.' };
+
+  } catch (error: any) {
+    if (error.name === 'TokenExpiredError') {
+      console.error(`[verificarTokenYCuenta] Token expirado:`, error);
+      throw new Error('El enlace de verificación ha expirado. Por favor, inicia sesión para solicitar un nuevo enlace.');
+    }
+    if (error.name === 'JsonWebTokenError') {
+      console.error(`[verificarTokenYCuenta] Token inválido:`, error);
+      throw new Error('El enlace de verificación es inválido o ha sido manipulado.');
+    }
+    console.error(`[verificarTokenYCuenta] Error inesperado en verificación:`, error);
+    throw new Error(`Error al verificar la cuenta: ${error.message || 'Error desconocido'}`);
+  }
+};
