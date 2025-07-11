@@ -3,14 +3,14 @@ import * as NoticiaController from '../controllers/NoticiaController';
 
 const router = Router();
 
-// --- Rutas Públicas   ---
+router.get("/public", NoticiaController.getAllNoticias);
+
 // GET: Obtener todas las noticias
 router.get("/", NoticiaController.authenticateAdmin, NoticiaController.getAllNoticias);
 
 // GET: Obtener una noticia por ID
 router.get("/:id", NoticiaController.authenticateAdmin, NoticiaController.getNoticiaById);
 
-// --- Rutas Protegidas   ---
 // POST: Crear una nueva noticia (protegida por authenticateAdmin)
 router.post("/", NoticiaController.authenticateAdmin, NoticiaController.crearNoticia);
 

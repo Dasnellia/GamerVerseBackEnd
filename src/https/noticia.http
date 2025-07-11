@@ -32,7 +32,6 @@ Authorization: Bearer TOKEN
   "Foto": "https://example.com/parche_noticia.jpg"
 }
 
-
 ### Eliminar Noticia 
 DELETE http://localhost:3001/api/noticia/2
 Accept: application/json
