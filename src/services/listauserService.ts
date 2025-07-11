@@ -20,3 +20,5 @@ export const getAllUsers = async () => {
         throw new Error("No se pudo obtener la lista de usuarios.");
     }
 };
+
+

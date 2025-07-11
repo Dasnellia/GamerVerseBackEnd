@@ -1,12 +1,18 @@
 import { Router } from 'express';
-import { verificarToken } from '../middleware/authMiddleware';
-import * as CarritoController from '../controllers/CarritoController';
+import * as CarritoController from '../controllers/CarritoController'; 
 
 const router = Router();
 
-router.get("/", verificarToken, CarritoController.getCarrito); 
-router.post("/items", verificarToken, CarritoController.addUpCarritoItem); 
-router.delete("/items/:JuegoID", verificarToken, CarritoController.borrarCarritoItem); 
-router.delete("/", verificarToken, CarritoController.limpiarCarrito); 
+// GET: Obtiene todos los ítems del carrito del usuario .
+router.get("/", CarritoController.getCarrito);
+
+// POST: Añade o actualiza la cantidad de un ítem existente.
+router.post("/items", CarritoController.addUpCarritoItem);
+
+// DELETE: Elimina un ítem específico del carrito según el ID.
+router.delete("/items/:JuegoID", CarritoController.borrarCarritoItem);
+
+// DELETE: Vacía el carrito del usuario.
+router.delete("/", CarritoController.limpiarCarrito);
 
 export default router;

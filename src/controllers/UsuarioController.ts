@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { Request, Response } from 'express';
-=======
-import { Request, Response, RequestHandler } from 'express';
->>>>>>> 5968b58 (Merge BackEndAle y BackEndJharif)
 import * as UsuarioService from '../services/usuarioService';
 import bcrypt from 'bcrypt';
 import { PrismaClient } from '../generated/prisma';

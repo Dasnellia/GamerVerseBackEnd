@@ -3,18 +3,12 @@ import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
 import { PrismaClient } from "../generated/prisma";
-<<<<<<< HEAD
 import { env } from 'process';
 
 const prisma = new PrismaClient();
 
 // const JWT_SECRET = process.env.JWT_SECRET || 'token'; // Ya no es necesaria si usas process.env directamente
 
-=======
-
-const prisma = new PrismaClient();
-
->>>>>>> 5968b58 (Merge BackEndAle y BackEndJharif)
 import { enviarCorreoVerificacion } from './emailService';
 
 export const registrarUsuario = async (data: any) => {

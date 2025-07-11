@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import express, { Request, Response, NextFunction, RequestHandler } from 'express';
-=======
-import express from 'express';
->>>>>>> 5968b58 (Merge BackEndAle y BackEndJharif)
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -14,11 +10,8 @@ import juegoRoutes from './routes/juegoRoutes';
 import carritoRoutes from './routes/carritoRoutes';
 import noticiaRoutes from './routes/noticiaRoutes';
 import listausersRoutes from './routes/listauserRoutes';
-<<<<<<< HEAD
 
 import { PrismaClient } from './generated/prisma'; 
-=======
->>>>>>> 5968b58 (Merge BackEndAle y BackEndJharif)
 
 dotenv.config();
 
@@ -26,7 +19,6 @@ const app = express();
 const rutaImagenes = path.join(process.cwd(), 'imagenes');
 
 // Configuración de CORS
-<<<<<<< HEAD
 app.use(cors({
     origin: 'http://localhost:5173', // Permite solicitudes solo desde este origen
     credentials: true // Permite el envío de cookies y cabeceras de autorización
@@ -37,22 +29,8 @@ app.use(express.json());
 
 // ====================================================================
 // Definición del Middleware de Autenticación JWT 
-=======
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
-app.use(express.json());
-
 // ====================================================================
-// Rutas de la API 
->>>>>>> 5968b58 (Merge BackEndAle y BackEndJharif)
-// ====================================================================
-app.use('/api/usuarios', usuarioRoutes); 
-app.use('/api/juegos', juegoRoutes);
-app.use('/api/noticia', noticiaRoutes);
-app.use('/static', express.static(rutaImagenes));
-app.use('/api/carrito', carritoRoutes);
-app.use('/api/admin/users', listausersRoutes); 
 
-<<<<<<< HEAD
 // Extiende la interfaz Request para incluir la propiedad 'user'
 interface AuthenticatedRequest extends Request {
     user?: { userId: number; rol: string }; 
@@ -115,10 +93,6 @@ app.use('/api/admin/users', authenticateJWT, listausersRoutes); // Si esta ruta 
 
 // Inicialización del servidor
 const PORT = process.env.PORT || 3001; // Puerto del servidor
-=======
-// Inicialización del servidor
-const PORT = process.env.PORT || 3001; 
->>>>>>> 5968b58 (Merge BackEndAle y BackEndJharif)
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });

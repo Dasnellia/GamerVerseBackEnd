@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import { verificarToken } from '../middleware/authMiddleware';
-import { getAllUsers } from '../controllers/ListaUserController';
+import ListaUserController from '../controllers/ListaUserController'; 
 
 const router = Router();
 
-router.get("/", verificarToken, getAllUsers); 
+const listauserRouter = ListaUserController();
+
+router.use('/', listauserRouter);
 
 export default router;
