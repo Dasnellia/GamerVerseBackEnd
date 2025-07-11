@@ -32,7 +32,10 @@ Authorization: Bearer TOKEN
   "Foto": "https://example.com/parche_noticia.jpg"
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5968b58 (Merge BackEndAle y BackEndJharif)
 ### Eliminar Noticia 
 DELETE http://localhost:3001/api/noticia/2
 Accept: application/json
