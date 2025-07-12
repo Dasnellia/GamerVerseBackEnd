@@ -19,16 +19,23 @@ export const procesarPago = async (req: Request, res: Response): Promise<any> =>
 
     const totalPago = await carritoService.calcularTotal(carritoItems);
 
-    //Simulación de pago
+    // Simulación de pago
     const pagoConfirmado = await carritoService.realizarPago(usuarioId, totalPago);
 
     if (!pagoConfirmado) {
       return res.status(400).json({ mensaje: 'Error al procesar el pago' });
     }
+
+    // Registrar la venta
     await carritoService.registrarVenta(usuarioId, carritoItems, totalPago);
+
+    // Obtener los juegos con sus claves
     const juegos = await carritoService.obtenerJuegosPorIds(carritoItems);
+
+    // Enviar el correo con las claves de los juegos
     await enviarCorreoCompra(usuario.Correo, juegos);
-    
+
+    // Responder con éxito
     res.status(200).json({ mensaje: 'Pago realizado exitosamente y claves enviadas al correo.' });
   } catch (error) {
     console.error(error);

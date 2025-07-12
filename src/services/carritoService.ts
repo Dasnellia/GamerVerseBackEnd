@@ -139,7 +139,7 @@ export const realizarPago = async (usuarioId: number, totalPago: number) => {
   return true;
 };
 
-// Registrar la venta (versión adaptada a lo que el compañero esperaba)
+// Registrar la venta
 export const registrarVenta = async (usuarioId: number, carritoItems: any[], totalPago: number) => {
   if (carritoItems.length === 0) {
     throw new Error("No hay ítems en el carrito para registrar una venta.");
@@ -148,37 +148,42 @@ export const registrarVenta = async (usuarioId: number, carritoItems: any[], tot
   const codigoVenta = `VENTA-${Date.now()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
   await prisma.$transaction(async (tx) => {
+    // Iterar sobre los ítems del carrito para registrar la venta y actualizar el stock
     for (const item of carritoItems) {
       const juego = await tx.juego.findUnique({
-        where: { JuegoID: item.id },
+        where: { JuegoID: item.juegoId },
         select: { Precio: true, Stock: true, Categoria_CategoriaID: true },
       });
 
       if (!juego) {
-        throw new Error(`Juego con ID ${item.id} no encontrado durante el registro de venta.`);
+        throw new Error(`Juego con ID ${item.juegoId} no encontrado durante el registro de venta.`);
       }
 
+      // Verificar que el stock sea suficiente
       if (item.cantidad > juego.Stock) {
         throw new Error(`Stock insuficiente para registrar la venta del juego "${item.nombre}".`);
       }
 
+      // Registrar la venta para cada juego en el carrito
       await tx.venta.create({
         data: {
           Usuario_UsuarioID: usuarioId,
           MontoPagado: totalPago,
           Fecha: new Date(),
-          Juego_JuegoID: carritoItems[0]?.juegoId || 0,
-          Juego_CategoriaID: 1,
-          Codigo: "CODIGO_qUE_VAS_a_GENERAR_POR_aHI"
+          Juego_JuegoID: item.juegoId,
+          Juego_CategoriaID: juego.Categoria_CategoriaID,
+          Codigo: codigoVenta,  // Código único de la venta
         },
       });
 
+      // Decrementar el stock del juego
       await tx.juego.update({
-        where: { JuegoID: item.id },
+        where: { JuegoID: item.juegoId },
         data: { Stock: { decrement: item.cantidad } },
       });
     }
 
+    // Eliminar los ítems del carrito después de la venta
     await tx.carritoItem.deleteMany({
       where: { UsuarioID: usuarioId },
     });

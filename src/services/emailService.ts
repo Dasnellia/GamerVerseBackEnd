@@ -84,3 +84,32 @@ export const enviarCorreoRestablecimientoContrasena = async (toEmail: string, re
         throw new Error('Error al enviar el correo de restablecimiento.');
     }
 };
+
+// Función para enviar el correo de confirmación de compra con claves de los juegos
+export const enviarCorreoCompra = async (correoDestino: string, juegos: { nombre: string; clave: string }[]) => {
+    const subject = 'Confirmación de tu compra en GameVerse';
+    const bodyLines = juegos.map(
+        (juego, i) => `<li>${i + 1}. <strong>${juego.nombre}</strong>: <code>${juego.clave}</code></li>`
+    ).join('');
+
+    const html = `
+        <h2>¡Gracias por tu compra en GameVerse!</h2>
+        <p>Este es el detalle de los juegos adquiridos y sus claves:</p>
+        <ul>${bodyLines}</ul>
+        <p>Disfruta jugando y gracias por ser parte de nuestra comunidad.</p>
+        <p><em>El equipo de GameVerse</em></p>
+    `;
+
+    try {
+        await transporter.sendMail({
+            from: `"GameVerse" <${process.env.CORREO_ENVIO}>`,  // Remitente
+            to: correoDestino,  // Destinatario
+            subject,  // Asunto
+            html,  // Cuerpo del correo en formato HTML
+        });
+        console.log(`Correo de confirmación enviado a ${correoDestino}`);
+    } catch (error) {
+        console.error(`Error al enviar correo de confirmación a ${correoDestino}:`, error);
+        throw new Error('Error al enviar el correo de confirmación de compra.');
+    }
+};
