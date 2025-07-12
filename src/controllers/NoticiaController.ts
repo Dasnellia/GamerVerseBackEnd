@@ -1,4 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
+
+import { Request, Response, NextFunction, RequestHandler } from 'express'; // Añade RequestHandler
 import * as noticiaService from '../services/noticiaService';
 
 interface AuthenticatedRequest extends Request {
@@ -7,6 +8,7 @@ interface AuthenticatedRequest extends Request {
         Admin: boolean;
     };
 }
+
 
 export const authenticateAdmin = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
     const isAdmin = req.user?.Admin;
@@ -125,3 +127,4 @@ export const borrarNoticia = async (req: Request, res: Response) => {
         res.status(500).json({ msg: "Error interno del servidor al eliminar la noticia." });
     }
 };
+

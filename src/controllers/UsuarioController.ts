@@ -1,3 +1,4 @@
+
 import { Request, Response, RequestHandler } from 'express';
 import * as UsuarioService from '../services/usuarioService';
 import bcrypt from 'bcrypt';
@@ -32,6 +33,7 @@ export const buscarUsuarioPorTokenRestablecimiento = async (token: string) => {
         }
     });
 };
+
 
 export const actualizarDatosUsuario = async (userId: number, dataToUpdate: any) => {
     return await prisma.usuario.update({
@@ -117,6 +119,7 @@ export const listar: RequestHandler = async (_req, res) => {
 export const editar: RequestHandler = async (req, res) => {
     const id = Number(req.params.id);
     if (isNaN(id)) {
+
         res.status(400).json({ error: 'ID de usuario inválido.' });
         return;
     }

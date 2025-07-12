@@ -3,6 +3,28 @@ import { PrismaClient } from '../generated/prisma';
 
 const prisma = new PrismaClient();
 
+export const verificarCompra = async (req: Request, res: Response): Promise<any> => {
+  const { Usuario_UsuarioID, Juego_JuegoID } = req.body;
+
+  try {
+    const venta = await prisma.venta.findFirst({
+      where: {
+        Usuario_UsuarioID: Usuario_UsuarioID,
+        Juego_JuegoID: Juego_JuegoID,
+      }
+    });
+
+    if (venta) {
+      return res.status(200).json({ comprado: true });
+    } else {
+      return res.status(404).json({ comprado: false });
+    }
+  } catch (error) {
+    console.error('Error al verificar la compra:', error);
+    return res.status(500).json({ error: 'Error interno del servidor al verificar la compra.' });
+  }
+};
+
 export const dejarCalificacion = async (req: Request, res: Response): Promise<any> => {
   const { Usuario_UsuarioID, Juego_JuegoID, Valoracion, Comentario } = req.body;
 

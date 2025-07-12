@@ -74,7 +74,9 @@ export const editarNoticia = async (noticiaID: number, data: { Titulo?: string; 
     }
     
     if (data.Foto !== undefined) {
-      updatePayload.Foto = data.Foto; 
+
+      updatePayload.Foto = data.Foto === null ? '' : data.Foto; 
+
     }
 
     const noticiaActualizada = await prisma.noticia.update({

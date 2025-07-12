@@ -1,7 +1,9 @@
 import { Router } from 'express';
+
 import * as NoticiaController from '../controllers/NoticiaController'; 
 
 const router = Router();
+
 
 router.get("/public", NoticiaController.getAllNoticias);
 
@@ -10,6 +12,7 @@ router.get("/", NoticiaController.authenticateAdmin, NoticiaController.getAllNot
 
 // GET: Obtener una noticia por ID
 router.get("/:id", NoticiaController.authenticateAdmin, NoticiaController.getNoticiaById);
+
 
 // POST: Crear una nueva noticia (protegida por authenticateAdmin)
 router.post("/", NoticiaController.authenticateAdmin, NoticiaController.crearNoticia);
