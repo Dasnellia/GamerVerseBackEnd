@@ -41,6 +41,8 @@ export const actualizarDatosUsuario = async (userId: number, dataToUpdate: any) 
     });
 };
 
+
+
 // --- FIN Funciones de Utilidad ---
 
 
@@ -118,17 +120,23 @@ export const listar: RequestHandler = async (_req, res) => {
 export const editar: RequestHandler = async (req, res) => {
     const id = Number(req.params.id);
     if (isNaN(id)) {
-        res.status(400).json({ error: 'ID de usuario inválido.' });
-        return;
+      res.status(400).json({ error: 'ID de usuario inválido.' });
+      return;
     }
+  
     try {
-        const usuario = await UsuarioService.actualizarUsuario(id, req.body);
-        res.json(usuario);
+      const { nombre, apellidos, correoElectronico } = req.body; // Nuevos campos que puedes permitir editar
+      const usuarioActualizado = await actualizarDatosUsuario(id, {
+        Nombre: nombre,
+        Apellidos: apellidos,
+        Correo: correoElectronico,
+      });
+      res.json(usuarioActualizado);
     } catch (err: any) {
-        console.error('Error en controlador editar usuario:', err);
-        res.status(400).json({ error: err.message });
+      console.error('Error en controlador editar usuario:', err);
+      res.status(400).json({ error: err.message });
     }
-};
+  };
 
 export const eliminar: RequestHandler = async (req, res) => {
     const id = Number(req.params.id);
