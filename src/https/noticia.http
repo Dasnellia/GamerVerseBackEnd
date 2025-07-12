@@ -1,12 +1,14 @@
 ### Obtener Todas las Noticias
 GET http://localhost:3001/api/noticia
 Accept: application/json
+Authorization: Bearer TOKEN
 
 ### Obtener Noticia por ID
 GET http://localhost:3001/api/noticia/4
 Accept: application/json
+Authorization: Bearer TOKEN
 
-### Crear Noticia (Requiere Admin)
+### Crear Noticia 
 POST http://localhost:3001/api/noticia
 Content-Type: application/json
 Accept: application/json
@@ -18,7 +20,9 @@ Authorization: Bearer TOKEN
   "Foto": "https://example.com/noticia_verano.jpg"
 }
 
-### Actualizar Noticia (Requiere Admin)
+
+### Actualizar Noticia
+
 PUT http://localhost:3001/api/noticia/2
 Content-Type: application/json
 Accept: application/json
@@ -31,7 +35,8 @@ Authorization: Bearer TOKEN
 }
 
 
-### Eliminar Noticia (Requiere Admin)
+### Eliminar Noticia 
+
 DELETE http://localhost:3001/api/noticia/2
 Accept: application/json
 Authorization: Bearer TOKEN

@@ -3,15 +3,16 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { PrismaClient } from "../generated/prisma";
-// --- ¡CAMBIO CRÍTICO AQUÍ! ---
-// La ruta correcta para tu mailer.js es '../utils/mailer'
-import { enviarCorreoVerificacion, enviarCorreoRestablecimientoContrasena } from '../services/emailService';
 
-
+ 
 const prisma = new PrismaClient();
+
+import { enviarCorreoVerificacion } from './emailService';
 
 export const registrarUsuario = async (data: any) => {
   const { nickname, correo, contrasena, pais } = data;
+
+
   console.log(`[RegistrarUsuario] Inicio del proceso de registro para: ${correo}`);
 
   const existeCorreo = await prisma.usuario.findUnique({ where: { Correo: correo } });
@@ -82,9 +83,11 @@ export const iniciarSesion = async (correoONickname: string, contrasena: string)
   }
 
   const token = jwt.sign(
-    {
-      userId: usuario.UsuarioID,
-      rol: usuario.Admin ? 'ADMIN' : 'USER'
+
+    { 
+      userId: usuario.UsuarioID, 
+      rol: usuario.Admin ? 'ADMIN' : 'USER' 
+
     },
     process.env.JWT_SECRET!,
     { expiresIn: '1h' }

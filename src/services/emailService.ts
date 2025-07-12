@@ -5,19 +5,17 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
-    // Es buena práctica especificar host y port aunque uses 'service: gmail'
+
     host: 'smtp.gmail.com', // Host de Gmail
     port: 587, // Puerto estándar para TLS
     secure: false, // Usar TLS, por lo que es false para 587 (true para 465 SSL)
     auth: {
-        user: process.env.CORREO_ENVIO,    // Tus variables de entorno existentes
-        pass: process.env.PASSWORD_CORREO // Tus variables de entorno existentes
+
+        user: process.env.CORREO_ENVIO,
+        pass: process.env.PASSWORD_CORREO 
     },
-    // Solo para desarrollo, si tienes problemas con certificados SSL.
-    // EN PRODUCCIÓN, SIEMPRE INTENTA NO USAR ESTO A MENOS QUE SEA ESTRÍCTAMENTE NECESARIO Y ENTENDIDO.
-    tls: {
-        rejectUnauthorized: false
-    }
+    tls: process.env.NODE_ENV === 'development' ? { rejectUnauthorized: false } : undefined
+
 });
 
 transporter.verify((error, success) => {
@@ -29,8 +27,9 @@ transporter.verify((error, success) => {
 });
 
 export const enviarCorreoVerificacion = async (correoDestino: string, token: string) => {
-    // Asegúrate de que esta URL coincida con la URL de tu frontend
-    const urlVerificacion = `${process.env.CLIENT_URL}/ConfirmarContrasena?token=${token}`; // Usar CLIENT_URL del .env
+
+    const urlVerificacion = `${process.env.CLIENT_URL}/ConfirmarContrasena?token=${token}`;
+
 
     const mailOptions = {
         from: `"GameVerse" <${process.env.CORREO_ENVIO}>`,
@@ -54,11 +53,6 @@ export const enviarCorreoVerificacion = async (correoDestino: string, token: str
     }
 };
 
-/**
- * Función para enviar el correo de restablecimiento de contraseña.
- * @param {string} toEmail - El correo electrónico del destinatario.
- * @param {string} resetToken - El token único para restablecer la contraseña.
- */
 export const enviarCorreoRestablecimientoContrasena = async (toEmail: string, resetToken: string) => {
     const resetLink = `${process.env.CLIENT_URL}/RecuperarContrasena?token=${resetToken}`;
 
@@ -66,7 +60,9 @@ export const enviarCorreoRestablecimientoContrasena = async (toEmail: string, re
         await transporter.sendMail({
             from: `"GameVerse" <${process.env.CORREO_ENVIO}>`,
             to: toEmail,
-            subject: 'Solicitud de Restablecimiento de Contraseña - GameVerse', // <-- ¡VERIFICA ESTO!
+
+            subject: 'Solicitud de Restablecimiento de Contraseña - GameVerse', 
+
             html: `
                 <p>Estimado usuario,</p>
                 <p>Hemos recibido una solicitud para restablecer la contraseña de su cuenta de GameVerse.</p>
@@ -78,6 +74,7 @@ export const enviarCorreoRestablecimientoContrasena = async (toEmail: string, re
                 <p>El equipo de GameVerse</p>
             `,
         });
+
         console.log(`Correo de restablecimiento enviado a ${toEmail}`); // <-- ¡VERIFICA ESTE LOG!
     } catch (error) {
         console.error(`Error al enviar correo de restablecimiento a ${toEmail}:`, error); // <-- ¡VERIFICA ESTE LOG DE ERROR!
@@ -112,4 +109,5 @@ export const enviarCorreoCompra = async (correoDestino: string, juegos: { nombre
         console.error(`Error al enviar correo de confirmación a ${correoDestino}:`, error);
         throw new Error('Error al enviar el correo de confirmación de compra.');
     }
+
 };

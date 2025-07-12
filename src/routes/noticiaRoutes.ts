@@ -1,18 +1,18 @@
 import { Router } from 'express';
-// Importa las funciones del controlador individualmente
+
 import * as NoticiaController from '../controllers/NoticiaController'; 
 
 const router = Router();
 
-// --- Rutas Públicas   ---
+
+router.get("/public", NoticiaController.getAllNoticias);
 
 // GET: Obtener todas las noticias
-router.get("/", NoticiaController.getAllNoticias);
+router.get("/", NoticiaController.authenticateAdmin, NoticiaController.getAllNoticias);
 
 // GET: Obtener una noticia por ID
-router.get("/:id", NoticiaController.getNoticiaById);
+router.get("/:id", NoticiaController.authenticateAdmin, NoticiaController.getNoticiaById);
 
-// --- Rutas Protegidas   ---
 
 // POST: Crear una nueva noticia (protegida por authenticateAdmin)
 router.post("/", NoticiaController.authenticateAdmin, NoticiaController.crearNoticia);
