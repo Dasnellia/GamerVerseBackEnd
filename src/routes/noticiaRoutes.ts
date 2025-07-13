@@ -4,8 +4,6 @@ import { verificarToken } from '../middleware/authMiddleware';
 
 const router = Router();
 
-router.get("/public", NoticiaController.getAllNoticias);
-
 // Ruta pública para el carrusel (no necesita autenticación)
 router.get("/public", NoticiaController.getAllNoticias);
 

@@ -2,12 +2,14 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { PrismaClient } from "../generated/prisma";
 
+ 
 const prisma = new PrismaClient();
 
 import { enviarCorreoVerificacion } from './emailService';
 
 export const registrarUsuario = async (data: any) => {
   const { nickname, correo, contrasena, pais } = data;
+
 
   console.log(`[RegistrarUsuario] Inicio del proceso de registro para: ${correo}`);
 
@@ -79,6 +81,7 @@ export const iniciarSesion = async (correoONickname: string, contrasena: string)
   }
 
   const token = jwt.sign(
+
     { 
       userId: usuario.UsuarioID, 
       Admin: usuario.Admin,

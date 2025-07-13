@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { dejarCalificacion } from '../controllers/CalificacionController';
+import { dejarCalificacion, verificarCompra } from '../controllers/CalificacionController';
 
 const router = Router();
 
-// Ruta para dejar una calificación
-router.post('/dejar', dejarCalificacion);
+router.post('/verificarCompra', verificarCompra);
+router.post('/dejarCalificacion', dejarCalificacion);
 
 export default router;

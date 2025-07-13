@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express'; 
 import * as noticiaService from '../services/noticiaService';
 
 interface AuthenticatedRequest extends Request {

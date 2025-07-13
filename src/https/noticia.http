@@ -20,7 +20,9 @@ Authorization: Bearer TOKEN
   "Foto": "https://example.com/noticia_verano.jpg"
 }
 
+
 ### Actualizar Noticia
+
 PUT http://localhost:3001/api/noticia/2
 Content-Type: application/json
 Accept: application/json
@@ -32,7 +34,9 @@ Authorization: Bearer TOKEN
   "Foto": "https://example.com/parche_noticia.jpg"
 }
 
+
 ### Eliminar Noticia 
+
 DELETE http://localhost:3001/api/noticia/2
 Accept: application/json
 Authorization: Bearer TOKEN

@@ -5,10 +5,11 @@ declare module 'express-serve-static-core' {
   interface Request {
     user?: {
       UsuarioID: number;
-      Admin: boolean; // <--- ¡Esto es clave!
+      Admin: boolean; 
     };
   }
 }
+
 
 export const verificarToken = (req: Request, res: Response, next: NextFunction): void => {
   const authHeader = req.headers['authorization'];
@@ -16,23 +17,29 @@ export const verificarToken = (req: Request, res: Response, next: NextFunction):
 
   if (token == null) {
     res.status(401).json({ msg: 'Acceso denegado. No se proporcionó token de autenticación.' });
+
     return;
+
   }
 
   const jwtSecret = process.env.JWT_SECRET;
   if (!jwtSecret) {
     console.error("ERROR: JWT_SECRET no está definido en las variables de entorno del servidor.");
     res.status(500).json({ msg: 'Error de configuración del servidor.' });
+
     return;
+
   }
 
-  jwt.verify(token, jwtSecret, (err: any, user: any) => { // <--- 'user' aquí es el payload decodificado
+  jwt.verify(token, jwtSecret, (err: any, user: any) => { 
     if (err) {
       console.error("Error al verificar JWT:", err.message);
       res.status(403).json({ msg: 'Token inválido o expirado.' });
+
       return;
     }
-    req.user = user; // <--- Se asigna el payload decodificado a req.user
+    req.user = user;
     next();
+
   });
 };

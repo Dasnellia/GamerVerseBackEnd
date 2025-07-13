@@ -1,6 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
 
-import * as listadoUsuarioService from '../services/listauserService';
+import express, { Request, Response, Router, NextFunction } from 'express';
+import * as listadoUsuarioService from '../services/listauserService'; 
+
 
 interface AuthenticatedRequest extends Request {
   user?: {
@@ -8,6 +9,7 @@ interface AuthenticatedRequest extends Request {
     Admin: boolean;
   };
 }
+
 
 // GET: Mostrar la lista de todos los usuarios
 export const getAllUsers = async (req: AuthenticatedRequest, res: Response) => {
