@@ -80,15 +80,29 @@ export const iniciarSesion = async (correoONickname: string, contrasena: string)
     throw new Error('Tu cuenta aún no ha sido verificada. Revisa tu correo electrónico.');
   }
 
-  const token = jwt.sign(
-
-    { 
-      userId: usuario.UsuarioID, 
+  if (process.env.DEBUG) {
+    console.log('🔍 [iniciarSesion] Usuario encontrado:', {
+      UsuarioID: usuario.UsuarioID,
       Admin: usuario.Admin,
+      Verificado: usuario.Verificado
+    });
+  }
+
+  const token = jwt.sign(
+    { 
+
+      UsuarioID: usuario.UsuarioID,  // ✅ CAMBIAR: de 'userId' a 'UsuarioID'
+      Admin: usuario.Admin           // ✅ Este está bien
+
     },
     process.env.JWT_SECRET!,
     { expiresIn: '1h' }
   );
+
+  console.log('🎟️ [iniciarSesion] Token generado con payload:', {
+    UsuarioID: usuario.UsuarioID,
+    Admin: usuario.Admin
+  });
 
   return { token, usuario };
 };
@@ -153,3 +167,4 @@ export const verificarTokenYCuenta = async (token: string) => {
     throw new Error(`Error al verificar la cuenta: ${error.message || 'Error desconocido'}`);
   }
 };
+

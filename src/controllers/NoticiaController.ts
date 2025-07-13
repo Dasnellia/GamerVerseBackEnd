@@ -8,15 +8,11 @@ interface AuthenticatedRequest extends Request {
     };
 }
 
+
 export const authenticateAdmin = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
     const isAdmin = req.user?.Admin;
 
-    if (!isAdmin) { 
-        res.status(403).json({ msg: "Acceso denegado: Se requiere rol de administrador." });
-        return;
-    }
-    next();
-};
+
 
 
 // GET: Obtener todas las noticias 

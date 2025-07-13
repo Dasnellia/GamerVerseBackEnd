@@ -10,6 +10,7 @@ import juegoRoutes from './routes/juegoRoutes';
 import carritoRoutes from './routes/carritoRoutes';
 import noticiaRoutes from './routes/noticiaRoutes';
 import listausersRoutes from './routes/listauserRoutes';
+import estadisticasRoutes from './routes/estadisticasRoutes';
 
 
 dotenv.config();
@@ -30,6 +31,10 @@ app.use('/api/noticia', noticiaRoutes);
 app.use('/static', express.static(rutaImagenes));
 app.use('/api/carrito', carritoRoutes);
 app.use('/api/admin/users', listausersRoutes); 
+app.use('/api/admin', (req, res) => {
+    res.status(200).json({ message: 'Ruta de administración' });
+});
+app.use('/api/estadisticas', estadisticasRoutes);
 
 // Inicialización del servidor
 const PORT = process.env.PORT || 3001; 
