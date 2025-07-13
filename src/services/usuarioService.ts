@@ -81,7 +81,7 @@ export const iniciarSesion = async (correoONickname: string, contrasena: string)
   const token = jwt.sign(
     { 
       userId: usuario.UsuarioID, 
-      rol: usuario.Admin ? 'ADMIN' : 'USER' 
+      Admin: usuario.Admin,
     },
     process.env.JWT_SECRET!,
     { expiresIn: '1h' }

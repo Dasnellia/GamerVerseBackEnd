@@ -5,7 +5,7 @@ declare module 'express-serve-static-core' {
   interface Request {
     user?: {
       UsuarioID: number;
-      Admin: boolean; 
+      Admin: boolean; // <--- ¡Esto es clave!
     };
   }
 }
@@ -26,13 +26,13 @@ export const verificarToken = (req: Request, res: Response, next: NextFunction):
     return;
   }
 
-  jwt.verify(token, jwtSecret, (err: any, user: any) => {
+  jwt.verify(token, jwtSecret, (err: any, user: any) => { // <--- 'user' aquí es el payload decodificado
     if (err) {
       console.error("Error al verificar JWT:", err.message);
       res.status(403).json({ msg: 'Token inválido o expirado.' });
       return;
     }
-    req.user = user;
+    req.user = user; // <--- Se asigna el payload decodificado a req.user
     next();
   });
 };
