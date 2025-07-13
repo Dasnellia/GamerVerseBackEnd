@@ -82,11 +82,13 @@ export const iniciarSesion = async (correoONickname: string, contrasena: string)
     throw new Error('Tu cuenta aún no ha sido verificada. Revisa tu correo electrónico.');
   }
 
-   console.log('🔍 [iniciarSesion] Usuario encontrado:', {
-    UsuarioID: usuario.UsuarioID,
-    Admin: usuario.Admin,
-    Verificado: usuario.Verificado
-  });
+  if (process.env.DEBUG) {
+    console.log('🔍 [iniciarSesion] Usuario encontrado:', {
+      UsuarioID: usuario.UsuarioID,
+      Admin: usuario.Admin,
+      Verificado: usuario.Verificado
+    });
+  }
 
   const token = jwt.sign(
     { 
