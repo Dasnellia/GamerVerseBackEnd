@@ -1,4 +1,3 @@
-
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -32,7 +31,7 @@ export const verificarToken = (req: Request, res: Response, next: NextFunction):
 
   }
 
-  jwt.verify(token, jwtSecret, (err: any, user: any) => {
+  jwt.verify(token, jwtSecret, (err: any, user: any) => { 
     if (err) {
       console.error("Error al verificar JWT:", err.message);
       res.status(403).json({ msg: 'Token inválido o expirado.' });

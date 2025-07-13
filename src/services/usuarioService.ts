@@ -1,5 +1,3 @@
-// src/services/usuarioService.ts
-
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { PrismaClient } from "../generated/prisma";
@@ -86,8 +84,7 @@ export const iniciarSesion = async (correoONickname: string, contrasena: string)
 
     { 
       userId: usuario.UsuarioID, 
-      rol: usuario.Admin ? 'ADMIN' : 'USER' 
-
+      Admin: usuario.Admin,
     },
     process.env.JWT_SECRET!,
     { expiresIn: '1h' }
