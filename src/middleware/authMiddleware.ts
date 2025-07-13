@@ -32,7 +32,6 @@ export const verificarToken = (req: Request, res: Response, next: NextFunction):
     return;
   }
 
-  // ✅ CORREGIR: Cambiar 'user' por 'decoded' en el callback
   jwt.verify(token, jwtSecret, (err: any, decoded: any) => {
     if (err) {
       console.error("❌ [verificarToken] Error al verificar JWT:", err.message);
