@@ -1,4 +1,3 @@
-// backend/src/index.ts (después de la modificación)
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
