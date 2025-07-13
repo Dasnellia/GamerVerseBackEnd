@@ -1,9 +1,3 @@
 ### Registrar un nuevo usuario
-POST http://localhost:3000/api/register
-Content-Type: application/json
-
-{
-    "nombre": "Juan",
-    "correo": "juan.perez@example.com",
-    "password": "UnaContrasenaSegura123"
-}
+GET http://localhost:3001/api/estadisticas/total-usuarios
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc3VhcmlvSUQiOjIsIkFkbWluIjp0cnVlLCJpYXQiOjE3NTI0MTU1OTcsImV4cCI6MTc1MjQxOTE5N30.qmedlB1Ppfbw5NUJDUTSk96IQHzgKhCgbMB96sPXprc

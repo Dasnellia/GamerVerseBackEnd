@@ -54,7 +54,7 @@ export const enviarCorreoVerificacion = async (correoDestino: string, token: str
 };
 
 export const enviarCorreoRestablecimientoContrasena = async (toEmail: string, resetToken: string) => {
-    const resetLink = `${process.env.CLIENT_URL}/RecuperarContrasena?token=${resetToken}`;
+    const resetLink = `${process.env.CLIENT_URL}/GameVerse/RecuperarContrasena?token=${resetToken}`;
 
     try {
         await transporter.sendMail({

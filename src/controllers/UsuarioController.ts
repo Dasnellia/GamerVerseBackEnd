@@ -9,7 +9,7 @@ import crypto from 'crypto';
 // La ruta correcta para tu mailer.js es '../utils/mailer'
 import { enviarCorreoVerificacion, enviarCorreoRestablecimientoContrasena } from '../services/emailService'; 
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient();    
 
 // --- Funciones de Utilidad (Internas del Controlador) ---
 export const buscarUsuarioPorIdentificador = async (identifier: string) => {
@@ -60,7 +60,7 @@ export const login: RequestHandler = async (req, res) => {
             token: result.token,
             usuario: {
                 nickname: result.usuario.Nombre,
-                tipo: result.usuario.Admin ? 'admin' : 'user',
+                admin : result.usuario.Admin,
                 id: result.usuario.UsuarioID,
                 correo: result.usuario.Correo,
                 foto: result.usuario.Foto,
